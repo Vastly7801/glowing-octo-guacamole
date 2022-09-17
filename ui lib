@@ -702,6 +702,8 @@ function EpicLibrary:CreateDropdown(text, tab, default, list, callback)
     DropdownContainer.Position = UDim2.new(0, 0, 1, 0)
     DropdownContainer.Size = UDim2.new(0, 160, 0, BodyYSize)
     DropdownContainer.ClipsDescendants = true
+    DropdownContainer.Visible = false
+    DropdownContainer.ZIndex = 3
     local UIListLayout = Instance.new("UIListLayout")
     UIListLayout.Parent = DropdownContainer
     UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
