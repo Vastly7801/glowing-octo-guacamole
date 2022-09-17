@@ -1,0 +1,828 @@
+if game.CoreGui:FindFirstChild('Design') then
+    game.CoreGui.Design:Destroy()
+end
+
+UIToggleKey = 'RightShift'
+local TweenService = game:GetService("TweenService") -- had to use TweenService to access the event of 'Completed'
+
+
+local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/Jxereas/UI-Libraries/main/notification_gui_library.lua", true))()
+
+local library = {}
+
+function library:CreateWindow(name)
+    local BodyYSize = 0
+
+    local function Resize(value)
+        BodyYSize = BodyYSize + value
+    end
+
+
+    local Design = Instance.new("ScreenGui")
+    local TopMain = Instance.new("Frame")
+    local Container = Instance.new("Frame")
+    
+    local UIGridLayout = Instance.new("UIGridLayout")
+    local Title = Instance.new("TextLabel")
+    local Logo = Instance.new("ImageButton")
+    local Close = Instance.new("TextButton")
+    local MinimizeMaximize = Instance.new("ImageButton")
+    local Settings = Instance.new("ImageButton")
+    local TabsContainer = Instance.new("Frame")
+    local UIListLayout = Instance.new("UIListLayout")
+
+    Design.Name = "Design"
+Design.Parent = game:GetService('CoreGui')
+
+TopMain.Name = "TopMain"
+TopMain.Parent = Design
+TopMain.BackgroundColor3 = Color3.fromRGB(38, 39, 39)
+TopMain.BorderColor3 = Color3.fromRGB(170, 85, 255)
+TopMain.Position = UDim2.new(0.388204783, 0, 0.229050279, 0)
+TopMain.Size = UDim2.new(0, 550, 0, 30)
+TopMain.Draggable = true
+TopMain.Active = true
+local UIS = game:GetService('UserInputService')
+
+UIS.InputBegan:Connect(function(input)
+    if input.KeyCode.Name == UIToggleKey then
+        TopMain.Visible = not TopMain.Visible
+    end
+end)
+
+Container.Name = "Container"
+Container.Parent = TopMain
+Container.BackgroundColor3 = Color3.fromRGB(54, 55, 56)
+Container.BorderColor3 = Color3.fromRGB(170, 85, 255)
+Container.Position = UDim2.new(0.200000003, 0, 0.989050269, 0)
+Container.Size = UDim2.new(0, 439, 0, 356)
+Container.ClipsDescendants = true
+
+UIGridLayout.Parent = Container
+UIGridLayout.FillDirection = Enum.FillDirection.Vertical
+UIGridLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UIGridLayout.CellPadding = UDim2.new(0, 2, 0, 2)
+UIGridLayout.CellSize = UDim2.new(0, 160, 0, 37)
+
+Title.Name = "Title"
+Title.Parent = TopMain
+Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Title.BackgroundTransparency = 1.000
+Title.BorderSizePixel = 0
+Title.Position = UDim2.new(0.0672727302, 0, -0.0333333351, 0)
+Title.Size = UDim2.new(0, 190, 0, 30)
+Title.Font = Enum.Font.Highway
+Title.Text = name
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.TextScaled = true
+Title.TextSize = 14.000
+Title.TextWrapped = true
+Title.TextXAlignment = Enum.TextXAlignment.Left
+
+Logo.Name = "Logo"
+Logo.Parent = TopMain
+Logo.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Logo.BackgroundTransparency = 1.000
+Logo.BorderColor3 = Color3.fromRGB(170, 85, 255)
+Logo.BorderSizePixel = 0
+Logo.Size = UDim2.new(0, 30, 0, 30)
+Logo.Image = "http://www.roblox.com/asset/?id=8531473603"
+
+
+Close.Name = "Close"
+Close.Parent = TopMain
+Close.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Close.BackgroundTransparency = 1.000
+Close.Position = UDim2.new(0.943636358, 0, 0, 0)
+Close.Size = UDim2.new(0, 30, 0, 30)
+Close.Font = Enum.Font.Highway
+Close.Text = "X"
+Close.TextColor3 = Color3.fromRGB(255, 255, 255)
+Close.TextScaled = true
+Close.TextSize = 14.000
+Close.TextWrapped = true
+local GottenMessage = false
+Close.MouseButton1Click:Connect(function()
+    TopMain.Visible = false
+    if GottenMessage == false then
+        GottenMessage = true
+        local notif = Notification.new("info", "Information Heading", "Information body message.")
+    notif:changeHeading("Info!")
+    notif:changeBody("You closed "..Title.Text..".")
+    notif:deleteTimeout(5)
+    local notif2 = Notification.new("info", "Information Heading", "Information body message.")
+    notif2:changeHeading("Info!")
+    notif2:changeBody("You can still open and close it by pressing RightShift.")
+    notif2:deleteTimeout(6)
+    local notif3 = Notification.new("info", "Information Heading", "Information body message.")
+    notif3:changeHeading("Info!")
+    notif3:changeBody("To Unload the UI go to Settings located in the top right.")
+    notif3:deleteTimeout(7)
+    end
+end)
+
+
+MinimizeMaximize.Name = "MinimizeMaximize"
+MinimizeMaximize.Parent = TopMain
+MinimizeMaximize.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+MinimizeMaximize.BackgroundTransparency = 1.000
+MinimizeMaximize.BorderColor3 = Color3.fromRGB(170, 85, 255)
+MinimizeMaximize.BorderSizePixel = 0
+MinimizeMaximize.Position = UDim2.new(0.889090896, 0, 0, 0)
+MinimizeMaximize.Size = UDim2.new(0, 30, 0, 30)
+MinimizeMaximize.Image = "http://www.roblox.com/asset/?id=10922264965"
+MinimizeMaximize.ImageColor3 = Color3.fromRGB(179, 141, 255)
+
+local Toggled = true
+local MMDebounce = false
+
+MinimizeMaximize.MouseButton1Click:Connect(function()
+    if MMDebounce == false then
+        local TweenInfoLabel = TweenInfo.new(.5)
+
+        local ContainerSmall = {Size = UDim2.new(0, 439,0, 0)} -- has to be a table
+        local ContainerBig = {Size = UDim2.new(0, 439,0, 355)} -- has to be a table
+        local TabsSmall = {Size = UDim2.new(0, 110,0, 0)} -- has to be a table
+        local TabsBig = {Size = UDim2.new(0, 110,0, 355)} -- has to be a table
+    
+        Toggled = not Toggled
+
+        if Toggled then
+            MMDebounce = true
+            MinimizeMaximize.Image = "http://www.roblox.com/asset/?id=10922264965" -- 10922273195 original
+
+            local ContainerTween = TweenService:Create(Container, TweenInfoLabel, ContainerBig)
+            local TabsTween = TweenService:Create(TabsContainer, TweenInfoLabel, TabsBig)
+
+            ContainerTween.Completed:Connect(function()
+                MMDebounce = false
+            end)
+            
+            ContainerTween:Play()
+            TabsTween:Play()
+
+        else
+            MMDebounce = true
+            MinimizeMaximize.Image = "http://www.roblox.com/asset/?id=10922273195" -- 10922264965 -- original
+
+            local ContainerTween = TweenService:Create(Container, TweenInfoLabel, ContainerSmall)
+            local TabsTween = TweenService:Create(TabsContainer, TweenInfoLabel, TabsSmall)
+
+            ContainerTween.Completed:Connect(function()
+                MMDebounce = false
+            end)
+
+            ContainerTween:Play()
+            TabsTween:Play()
+
+        end
+    end
+end)
+
+Settings.Name = "Settings"
+Settings.Parent = TopMain
+Settings.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Settings.BackgroundTransparency = 1.000
+Settings.BorderColor3 = Color3.fromRGB(170, 85, 255)
+Settings.BorderSizePixel = 0
+Settings.Position = UDim2.new(0.827000022, 0, 0, 0)
+Settings.Size = UDim2.new(0, 30, 0, 30)
+Settings.Image = "http://www.roblox.com/asset/?id=10922220676"
+
+
+
+TabsContainer.Name = "TabsContainer"
+TabsContainer.Parent = TopMain
+TabsContainer.BackgroundColor3 = Color3.fromRGB(36, 37, 37)
+TabsContainer.BorderColor3 = Color3.fromRGB(170, 85, 255)
+TabsContainer.Position = UDim2.new(0, 0, 1, 0)
+TabsContainer.Size = UDim2.new(0, 110, 0, 355)
+TabsContainer.ClipsDescendants = true
+
+UIListLayout.Parent = TabsContainer
+UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UIListLayout.Padding = UDim.new(0.00499999989, 0)
+
+local Containers = Instance.new("Folder")
+
+Containers.Name = "Containers"
+Containers.Parent = Container
+
+
+
+
+local HomeContainer = Instance.new("Frame")
+local CreditsTitle = Instance.new("TextLabel")
+local UICorner = Instance.new("UICorner")
+local Credits = Instance.new("TextLabel")
+local UICorner_2 = Instance.new("UICorner")
+local HelpTitle = Instance.new("TextLabel")
+local UICorner_3 = Instance.new("UICorner")
+local Help = Instance.new("TextLabel")
+local UICorner_4 = Instance.new("UICorner")
+local DiscordLink = Instance.new("TextButton")
+local UICorner_5 = Instance.new("UICorner")
+
+
+HomeContainer.Name = "HomeContainer"
+HomeContainer.Parent = Containers
+HomeContainer.BackgroundColor3 = Color3.fromRGB(54, 55, 56)
+HomeContainer.BorderSizePixel = 0
+HomeContainer.Size = UDim2.new(0, 439, 0, 355)
+Logo.MouseButton1Click:Connect(function()
+    for i,v in pairs(Containers:GetChildren()) do
+        v.Visible = false
+    end
+    HomeContainer.Visible = true
+end)
+
+CreditsTitle.Name = "CreditsTitle"
+CreditsTitle.Parent = HomeContainer
+CreditsTitle.BackgroundColor3 = Color3.fromRGB(36, 37, 37)
+CreditsTitle.Position = UDim2.new(0.0432801805, 0, 0.0845070407, 0)
+CreditsTitle.Size = UDim2.new(0, 400, 0, 30)
+CreditsTitle.Font = Enum.Font.Highway
+CreditsTitle.Text = "-- Credits --"
+CreditsTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+CreditsTitle.TextScaled = true
+CreditsTitle.TextSize = 14.000
+CreditsTitle.TextWrapped = true
+
+UICorner.Parent = CreditsTitle
+
+Credits.Name = "Credits"
+Credits.Parent = HomeContainer
+Credits.BackgroundColor3 = Color3.fromRGB(36, 37, 37)
+Credits.Position = UDim2.new(0.0432801805, 0, 0.152112678, 0)
+Credits.Size = UDim2.new(0, 400, 0, 127)
+Credits.Font = Enum.Font.Highway
+Credits.Text = "UI Library: Vastly#0493\\nScripting: Vastly#0493\\nNotification Library: Jxereas#3766"
+Credits.TextColor3 = Color3.fromRGB(255, 255, 255)
+Credits.TextScaled = true
+Credits.TextSize = 14.000
+Credits.TextWrapped = true
+
+UICorner_2.Parent = Credits
+
+HelpTitle.Name = "HelpTitle"
+HelpTitle.Parent = HomeContainer
+HelpTitle.BackgroundColor3 = Color3.fromRGB(36, 37, 37)
+HelpTitle.Position = UDim2.new(0.0432801805, 0, 0.560563385, 0)
+HelpTitle.Size = UDim2.new(0, 400, 0, 26)
+HelpTitle.Font = Enum.Font.Highway
+HelpTitle.Text = "-- Help --"
+HelpTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+HelpTitle.TextScaled = true
+HelpTitle.TextSize = 14.000
+HelpTitle.TextWrapped = true
+
+UICorner_3.Parent = HelpTitle
+
+Help.Name = "Help"
+Help.Parent = HomeContainer
+Help.BackgroundColor3 = Color3.fromRGB(36, 37, 37)
+Help.Position = UDim2.new(0.0432801843, 0, 0.633802772, 0)
+Help.Size = UDim2.new(0, 400, 0, 127)
+Help.Font = Enum.Font.Highway
+Help.Text = "Settings located on TopRight (Gear Icon)\\nRightShift is default keybind for toggling the UI.\\nFor any other questions and or help visit the Discord|"
+Help.TextColor3 = Color3.fromRGB(255, 255, 255)
+Help.TextScaled = true
+Help.TextSize = 14.000
+Help.TextWrapped = true
+
+UICorner_4.Parent = Help
+
+
+local SettingsContainer = Instance.new("Frame")
+local SettingsSection = Instance.new("TextLabel")
+local UICorner = Instance.new("UICorner")
+local SettingsTitle = Instance.new("TextLabel")
+local UICorner_2 = Instance.new("UICorner")
+local UIKeybindText = Instance.new("TextLabel")
+local UICorner_3 = Instance.new("UICorner")
+local UIKeybind = Instance.new("TextButton")
+local UICorner_4 = Instance.new("UICorner")
+local UnloadUIText = Instance.new("TextLabel")
+local UICorner_5 = Instance.new("UICorner")
+local UnloadUI = Instance.new("TextButton")
+local UICorner_6 = Instance.new("UICorner")
+
+
+SettingsContainer.Name = "SettingsContainer"
+SettingsContainer.Parent = Containers
+SettingsContainer.BackgroundColor3 = Color3.fromRGB(54, 55, 56)
+SettingsContainer.BorderSizePixel = 0
+SettingsContainer.Size = UDim2.new(0, 439, 0, 355)
+SettingsContainer.Visible = false
+Settings.MouseButton1Click:Connect(function()
+    for i,v in pairs(Containers:GetChildren()) do
+        v.Visible = false
+    end
+    SettingsContainer.Visible = true
+end)
+
+SettingsSection.Name = "SettingsSection"
+SettingsSection.Parent = SettingsContainer
+SettingsSection.BackgroundColor3 = Color3.fromRGB(36, 37, 37)
+SettingsSection.Position = UDim2.new(0.0432801805, 0, 0.109859154, 0)
+SettingsSection.Size = UDim2.new(0, 400, 0, 300)
+SettingsSection.Font = Enum.Font.Highway
+SettingsSection.Text = ""
+SettingsSection.TextColor3 = Color3.fromRGB(255, 255, 255)
+SettingsSection.TextScaled = true
+SettingsSection.TextSize = 14.000
+SettingsSection.TextWrapped = true
+
+
+UICorner.Parent = SettingsSection
+
+SettingsTitle.Name = "SettingsTitle"
+SettingsTitle.Parent = SettingsSection
+SettingsTitle.BackgroundColor3 = Color3.fromRGB(36, 37, 37)
+SettingsTitle.Position = UDim2.new(0.000780180097, 0, -0.0899412259, 0)
+SettingsTitle.Size = UDim2.new(0, 400, 0, 30)
+SettingsTitle.Font = Enum.Font.Highway
+SettingsTitle.Text = "-- Settings --"
+SettingsTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+SettingsTitle.TextScaled = true
+SettingsTitle.TextSize = 14.000
+SettingsTitle.TextWrapped = true
+
+UICorner_2.Parent = SettingsTitle
+
+UIKeybindText.Name = "UIKeybindText"
+UIKeybindText.Parent = SettingsSection
+UIKeybindText.BackgroundColor3 = Color3.fromRGB(54, 55, 56)
+UIKeybindText.Position = UDim2.new(0.0625, 0, 0.0500000007, 0)
+UIKeybindText.Size = UDim2.new(0, 350, 0, 50)
+UIKeybindText.Font = Enum.Font.Highway
+UIKeybindText.Text = " UI Keybind"
+UIKeybindText.TextColor3 = Color3.fromRGB(255, 255, 255)
+UIKeybindText.TextSize = 35.000
+UIKeybindText.TextWrapped = true
+UIKeybindText.TextXAlignment = Enum.TextXAlignment.Left
+
+UICorner_3.Parent = UIKeybindText
+
+UIKeybind.Name = "UIKeybind"
+UIKeybind.Parent = UIKeybindText
+UIKeybind.BackgroundColor3 = Color3.fromRGB(36, 37, 37)
+UIKeybind.Position = UDim2.new(0.501428723, 0, 0.149999991, 0)
+UIKeybind.Size = UDim2.new(0, 159, 0, 35)
+UIKeybind.Font = Enum.Font.Highway
+UIKeybind.Text = "RightShift"
+UIKeybind.TextColor3 = Color3.fromRGB(255, 255, 255)
+UIKeybind.TextScaled = true
+UIKeybind.TextSize = 14.000
+UIKeybind.TextWrapped = true
+local IsChangingUIKey = false
+UIKeybind.MouseButton1Click:Connect(function()
+    IsChangingUIKey = true
+    UIKeybind.Text = '...'
+end)
+
+local UIS = game:GetService('UserInputService')
+UIS.InputBegan:Connect(function(input)
+    if IsChangingUIKey then
+        IsChangingUIKey = false
+        UIToggleKey = input.KeyCode.Name
+        UIKeybind.Text = UIToggleKey
+    end
+end)
+
+UICorner_4.Parent = UIKeybind
+
+UnloadUIText.Name = "UnloadUIText"
+UnloadUIText.Parent = SettingsSection
+UnloadUIText.BackgroundColor3 = Color3.fromRGB(54, 55, 56)
+UnloadUIText.Position = UDim2.new(0.0625, 0, 0.25, 0)
+UnloadUIText.Size = UDim2.new(0, 350, 0, 50)
+UnloadUIText.Font = Enum.Font.Highway
+UnloadUIText.Text = " Unload UI"
+UnloadUIText.TextColor3 = Color3.fromRGB(255, 255, 255)
+UnloadUIText.TextSize = 35.000
+UnloadUIText.TextWrapped = true
+UnloadUIText.TextXAlignment = Enum.TextXAlignment.Left
+
+UICorner_5.Parent = UnloadUIText
+
+UnloadUI.Name = "UnloadUI"
+UnloadUI.Parent = UnloadUIText
+UnloadUI.BackgroundColor3 = Color3.fromRGB(36, 37, 37)
+UnloadUI.Position = UDim2.new(0.501428723, 0, 0.149999991, 0)
+UnloadUI.Size = UDim2.new(0, 159, 0, 35)
+UnloadUI.Font = Enum.Font.Highway
+UnloadUI.Text = "Unload UI"
+UnloadUI.TextColor3 = Color3.fromRGB(255, 255, 255)
+UnloadUI.TextScaled = true
+UnloadUI.TextSize = 14.000
+UnloadUI.TextWrapped = true
+UnloadUI.MouseButton1Click:Connect(function()
+    local cg = game:GetService('CoreGui')
+    cg.Design:Destroy()
+end)
+
+UICorner_6.Parent = UnloadUI
+
+DiscordLink.Name = "DiscordLink"
+DiscordLink.Parent = Help
+DiscordLink.BackgroundColor3 = Color3.fromRGB(54, 55, 56)
+DiscordLink.Position = UDim2.new(0.65500015, 0, 0.803149581, 0)
+DiscordLink.Size = UDim2.new(0, 128, 0, 25)
+DiscordLink.Font = Enum.Font.Unknown
+DiscordLink.Text = "https://discord.gg/gdtjwJUKxC"
+DiscordLink.TextColor3 = Color3.fromRGB(255, 255, 255)
+DiscordLink.TextScaled = true
+DiscordLink.TextSize = 14.000
+DiscordLink.TextWrapped = true
+DiscordLink.MouseButton1Click:Connect(function()
+	if setclipboard() then
+		setclipboard(DiscordLink.Text)
+		DiscordLink.Text = 'Discord Link Copied!'
+        local notif = Notification.new("success", "Success", "Success body message.")
+        notif:changeHeading("Success!")
+        notif:changeBody("Discord Link Copied!")
+        notif:deleteTimeout(2.5)
+		task.wait(1.5)
+		DiscordLink.Text = "https://discord.gg/gdtjwJUKxC"
+	else
+		print('Your executor does not support setclipboard')
+        local notif = Notification.new("error", "Error Heading", "Error body message.")
+        notif:changeHeading("Error!")
+        notif:changeBody("Your Executor Does Not Support This Feature!")
+        notif:deleteTimeout(2.5)
+	end
+end)
+
+UICorner_5.Parent = DiscordLink
+
+local EpicLibrary = {}
+
+function EpicLibrary:CreateButton(text, tab, callback)
+    local callback = callback or function() end
+    text = text or "Button"
+
+    local Button = Instance.new("TextButton")
+
+    Button.Name = "Button"
+    Button.Parent = tab
+    Button.BackgroundColor3 = Color3.fromRGB(36, 37, 37)
+    Button.BorderColor3 = Color3.fromRGB(170, 85, 255)
+    Button.BorderSizePixel = 0
+    Button.Size = UDim2.new(0, 160, 0, 25)
+    Button.Font = Enum.Font.Highway
+    Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Button.TextSize = 30.000
+    Button.TextWrapped = true
+    Button.Text = text
+
+    Button.MouseButton1Click:Connect(function()
+        local notif = Notification.new("success", "Success", "Success body message.")
+        notif:changeHeading("Success!")
+        notif:changeBody(Button.Text.." Clicked!")
+        notif:deleteTimeout(2.5)
+        pcall(callback) 
+    end)
+end
+
+function EpicLibrary:CreateToggle(text, tab, default, callback)
+    local actions = {}
+    default = default or false
+    local enabled = default
+
+    text = text or "Toggle"
+    callback = callback or function() end
+
+    local Toggle = Instance.new("TextLabel")
+    local Background = Instance.new("TextButton")
+    local UICorner = Instance.new("UICorner")
+    local MainButton = Instance.new("TextButton")
+    local UICorner_2 = Instance.new("UICorner")
+
+    Toggle.Name = "Toggle"
+    Toggle.Parent = tab
+    Toggle.BackgroundColor3 = Color3.fromRGB(36, 37, 37)
+    Toggle.BorderSizePixel = 0
+    Toggle.Size = UDim2.new(0, 200, 0, 50)
+    Toggle.Font = Enum.Font.Highway
+    Toggle.Text = text
+    Toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Toggle.TextSize = 30.000
+    Toggle.TextXAlignment = Enum.TextXAlignment.Left
+
+    Background.Name = "Background"
+    Background.Parent = Toggle
+    Background.BackgroundColor3 = Color3.fromRGB(54, 55, 56)
+    Background.BorderColor3 = Color3.fromRGB(170, 85, 255)
+    Background.Position = UDim2.new(0.8125, 0, 0.162162155, 0)
+    Background.Size = UDim2.new(0, 25, 0, 25)
+    Background.Font = Enum.Font.SourceSans
+    Background.Text = ""
+    Background.TextColor3 = Color3.fromRGB(0, 0, 0)
+    Background.TextSize = 14.000
+
+    UICorner.Parent = Background
+
+    MainButton.Name = "MainButton"
+    MainButton.Parent = Background
+    MainButton.BackgroundColor3 = Color3.fromRGB(170, 85, 255)
+    MainButton.BorderColor3 = Color3.fromRGB(170, 85, 255)
+    MainButton.Position = UDim2.new(0, 1, 0, 1)
+    MainButton.Size = UDim2.new(0, 22, 0, 22)
+    MainButton.Font = Enum.Font.SourceSans
+    MainButton.Text = ""
+    MainButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+    MainButton.TextSize = 14.000
+    if enabled then
+        MainButton.Transparency = 0
+    else
+        MainButton.Transparency = 1
+    end
+    
+
+    UICorner_2.Parent = MainButton
+
+    local function Fire()
+        enabled = not enabled
+        if enabled then
+            MainButton.Transparency = 0
+            local notif = Notification.new("success", "Success", "Success body message.")
+            notif:changeHeading("Toggled!")
+            notif:changeBody(Toggle.Text.." ON")
+            notif:deleteTimeout(2.5)
+        else
+            MainButton.Transparency = 1
+            local notif = Notification.new("error", "Error Heading", "Error body message.")
+            notif:changeHeading("Toggled!")
+            notif:changeBody(Toggle.Text.." OFF")
+            notif:deleteTimeout(2.5)
+        end
+        
+        pcall(callback, enabled)
+    end
+
+    Background.MouseButton1Click:Connect(Fire)
+    MainButton.MouseButton1Click:Connect(Fire)
+end
+
+    function EpicLibrary:CreateSlider(text, tab, default, minvalue, maxvalue, callback)
+        text = text or 'Slider'
+        default = default or 0
+        minvalue = minvalue or 0
+        maxvalue = maxvalue or 200
+        callback = callback or function() end
+
+        local Slider = Instance.new("Frame")
+        local Title = Instance.new("TextLabel")
+        local SliderButton = Instance.new("TextButton")
+        local SliderInner = Instance.new("Frame")
+        local UICorner = Instance.new("UICorner")
+        local UICorner_2 = Instance.new("UICorner")
+        local SliderValue = Instance.new("TextLabel")
+
+
+        Slider.Name = "Slider"
+        Slider.Parent = tab
+        Slider.BackgroundColor3 = Color3.fromRGB(36, 37, 37)
+        Slider.BorderSizePixel = 0
+        Slider.Size = UDim2.new(0, 100, 0, 100)
+
+        Title.Name = "Title"
+        Title.Parent = Slider
+        Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        Title.BackgroundTransparency = 1.000
+        Title.Size = UDim2.new(0, 130, 0, 20)
+        Title.Font = Enum.Font.Highway
+        Title.Text = text
+        Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+        Title.TextSize = 22.000
+
+        SliderButton.Name = "SliderButton"
+        SliderButton.Parent = Slider
+        SliderButton.BackgroundColor3 = Color3.fromRGB(51, 52, 53)
+        SliderButton.BorderColor3 = Color3.fromRGB(170, 85, 255)
+        SliderButton.BorderSizePixel = 0
+        SliderButton.Position = UDim2.new(0.03125, 0, 0.540540516, 0)
+        SliderButton.Size = UDim2.new(0, 150, 0, 11)
+        SliderButton.Font = Enum.Font.SourceSans
+        SliderButton.Text = ""
+        SliderButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+        SliderButton.TextSize = 14.000
+
+        SliderInner.Name = "SliderInner"
+        SliderInner.Parent = SliderButton
+        SliderInner.BackgroundColor3 = Color3.fromRGB(170, 85, 255)
+        SliderInner.BorderSizePixel = 0
+        SliderInner.Size = UDim2.new(0, 0, 0, 11)
+        SliderInner.Position = UDim2.new(0, 0, 0, 0)
+
+        UICorner.Parent = SliderInner
+
+        UICorner_2.Parent = SliderButton
+
+        SliderValue.Name = "SliderValue"
+        SliderValue.Parent = Slider
+        SliderValue.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        SliderValue.BackgroundTransparency = 1.000
+        SliderValue.Position = UDim2.new(0.84375, 0, 0, 0)
+        SliderValue.Size = UDim2.new(0, 20, 0, 20)
+        SliderValue.Font = Enum.Font.Highway
+        SliderValue.Text = default
+        SliderValue.TextColor3 = Color3.fromRGB(255, 255, 255)
+        SliderValue.TextScaled = true
+        SliderValue.TextSize = 22.000
+        SliderValue.TextWrapped = true
+        SliderValue.TextXAlignment = Enum.TextXAlignment.Left
+
+        local mouse = game:GetService('Players').LocalPlayer:GetMouse()
+        local uis = game:GetService("UserInputService")
+        local Value;
+
+        SliderButton.MouseButton1Down:Connect(function()
+        Value = math.floor((((tonumber(maxvalue) - tonumber(minvalue)) / 318) * SliderInner.AbsoluteSize.X) + tonumber(minvalue)) or 0
+        pcall(function()
+            callback(Value)
+        end)
+        SliderInner.Size = UDim2.new(0, math.clamp(mouse.X - SliderInner.AbsolutePosition.X, 0, 318), 0, 11)
+        moveconnection = mouse.Move:Connect(function()
+            SliderValue.Text = Value
+            Value = math.floor((((tonumber(maxvalue) - tonumber(minvalue)) / 318) * SliderInner.AbsoluteSize.X) + tonumber(minvalue))
+            pcall(function()
+                callback(Value)
+            end)
+            SliderInner.Size = UDim2.new(0, math.clamp(mouse.X - SliderInner.AbsolutePosition.X, 0, 318), 0, 11)
+        end)
+        releaseconnection = uis.InputEnded:Connect(function(Mouse)
+            if Mouse.UserInputType == Enum.UserInputType.MouseButton1 then
+                Value = math.floor((((tonumber(maxvalue) - tonumber(minvalue)) / 318) * SliderInner.AbsoluteSize.X) + tonumber(minvalue))
+                pcall(function()
+                    callback(Value)
+                end)
+                SliderInner.Size = UDim2.new(0, math.clamp(mouse.X - SliderInner.AbsolutePosition.X, 0, 318), 0, 11)
+                moveconnection:Disconnect()
+                releaseconnection:Disconnect()
+            end
+        end)
+    end)
+end
+
+
+
+function EpicLibrary:CreateDropdown(text, tab, default, list, callback)
+        Resize(15)
+
+        local DropYSize = 0
+        local IsDropped = false
+
+
+    text = text or "Dropdown"
+    list = list or {}
+    callback = callback or function() end
+    default = default or "Option1"
+        
+
+
+    local Dropdown = Instance.new("Frame")
+    local DropdownContainer = Instance.new("Frame")
+    local DropdownToggle = Instance.new("ImageButton")
+    local DropdownTitle = Instance.new("TextLabel")
+    local SelectedDropdown = Instance.new("TextLabel")
+
+
+    Dropdown.Name = "Dropdown"
+    Dropdown.Parent = tab
+    Dropdown.BackgroundColor3 = Color3.fromRGB(36, 37, 37)
+    Dropdown.BorderColor3 = Color3.fromRGB(170, 85, 255)
+    Dropdown.Size = UDim2.new(0, 100, 0, 100)
+
+    DropdownContainer.Name = "DropdownContainer"
+    DropdownContainer.Parent = Dropdown
+    DropdownContainer.BackgroundColor3 = Color3.fromRGB(36, 37, 37)
+    DropdownContainer.BorderColor3 = Color3.fromRGB(170, 85, 255)
+    DropdownContainer.Position = UDim2.new(0, 0, 1, 0)
+    DropdownContainer.Size = UDim2.new(0, 160, 0, BodyYSize)
+    DropdownContainer.ClipsDescendants = true
+    local UIListLayout = Instance.new("UIListLayout")
+    UIListLayout.Parent = DropdownContainer
+    UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+
+    DropdownToggle.Name = "DropdownToggle"
+    DropdownToggle.Parent = Dropdown
+    DropdownToggle.BackgroundColor3 = Color3.fromRGB(34, 35, 35)
+    DropdownToggle.BorderSizePixel = 0
+    DropdownToggle.Position = UDim2.new(0.793750048, 0, 0.0810810775, 0)
+    DropdownToggle.Rotation = 90.000
+    DropdownToggle.Size = UDim2.new(0, 30, 0, 30)
+    DropdownToggle.Image = "http://www.roblox.com/asset/?id=10931568125"
+    DropdownToggle.MouseButton1Click:Connect(function()
+        if IsDropped then
+            IsDropped = false
+            DropdownToggle.Rotation = 90.000
+            DropdownContainer.Size = UDim2.new(0, 160, 0, 0)
+        else
+            IsDropped = true
+            DropdownToggle.Rotation = -90.000
+            DropdownContainer.Size = UDim2.new(0, 160, 0, DropYSize)
+        end
+    end)
+
+    DropdownTitle.Name = "DropdownTitle"
+    DropdownTitle.Parent = Dropdown
+    DropdownTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    DropdownTitle.BackgroundTransparency = 1.000
+    DropdownTitle.Size = UDim2.new(0, 117, 0, 20)
+    DropdownTitle.Font = Enum.Font.Highway
+    DropdownTitle.Text = text
+    DropdownTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    DropdownTitle.TextSize = 22.000
+    DropdownTitle.TextWrapped = true
+
+    SelectedDropdown.Name = "SelectedDropdown"
+    SelectedDropdown.Parent = Dropdown
+    SelectedDropdown.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    SelectedDropdown.BackgroundTransparency = 1.000
+    SelectedDropdown.Position = UDim2.new(0, 0, 0.459459454, 0)
+    SelectedDropdown.Size = UDim2.new(0, 117, 0, 20)
+    SelectedDropdown.Font = Enum.Font.Highway
+    SelectedDropdown.Text = default
+    SelectedDropdown.TextColor3 = Color3.fromRGB(255, 255, 255)
+    SelectedDropdown.TextSize = 18.000
+    SelectedDropdown.TextWrapped = true
+
+    for i,v in next, list do
+        local Option = Instance.new("TextButton")
+
+        Option.Name = "Option"
+        Option.Parent = DropdownContainer
+        Option.BackgroundColor3 = Color3.fromRGB(54, 55, 56)
+        Option.BorderSizePixel = 0
+        Option.Size = UDim2.new(0, 160, 0, 15)
+        Option.Font = Enum.Font.Highway
+        Option.TextColor3 = Color3.fromRGB(255, 255, 255)
+        Option.TextSize = 17.000
+        Option.TextWrapped = true
+        Option.Text = v
+        DropYSize = DropYSize + 15
+
+        Option.MouseButton1Click:Connect(function()
+            local notif = Notification.new("success", "Success", "Success body message.")
+            notif:changeHeading("Success!")
+            notif:changeBody(Option.Text.." Chosen!")
+            notif:deleteTimeout(2.5)
+            SelectedDropdown.Text = v
+            callback(v)
+        end)
+    end
+end
+
+
+function EpicLibrary:CreateTab(text)
+    text = text or "Tab"
+    local TabButton = Instance.new("TextButton")
+    local ExampleContainer = Instance.new("Frame")
+    local UIGridLayout = Instance.new("UIGridLayout")
+
+    TabButton.Name = "TabButton"
+    TabButton.Parent = TabsContainer
+    TabButton.BackgroundColor3 = Color3.fromRGB(54, 55, 56)
+    TabButton.BorderSizePixel = 0
+    TabButton.Size = UDim2.new(0, 110, 0, 39)
+    TabButton.Font = Enum.Font.Highway
+    TabButton.Text = text
+    TabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TabButton.TextScaled = true
+    TabButton.TextSize = 14.000
+    TabButton.TextWrapped = true
+
+    
+
+    ExampleContainer.Name = text..'Container'
+    ExampleContainer.Parent = Containers
+    ExampleContainer.BackgroundColor3 = Color3.fromRGB(54, 55, 56)
+    ExampleContainer.BorderSizePixel = 0
+    ExampleContainer.Size = UDim2.new(0, 439, 0, 355)
+    ExampleContainer.Visible = false
+
+   
+    UIGridLayout.Parent = ExampleContainer
+    UIGridLayout.FillDirection = Enum.FillDirection.Vertical
+    UIGridLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    UIGridLayout.CellPadding = UDim2.new(0, 2, 0, 2)
+    UIGridLayout.CellSize = UDim2.new(0, 160, 0, 37)
+
+    TabButton.MouseButton1Click:Connect(function()
+        for i,v in next,Containers:GetChildren() do
+            v.Visible = false
+        end
+        ExampleContainer.Visible = true
+        print(ExampleContainer.Name)
+    end)
+    return ExampleContainer
+end
+
+
+-- end of making new stuff
+    return EpicLibrary
+end
+
+return library
