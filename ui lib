@@ -2,6 +2,12 @@ if game.CoreGui:FindFirstChild('Design') then
     game.CoreGui.Design:Destroy()
 end
 
+local notif = Notification.new("message", Message Heading"Message body message.")
+notif:changeHeading("Loading")
+notif:changeBody("Script Is Loading...")
+notif:deleteTimeout(2.5)
+
+
 UIToggleKey = 'RightShift'
 local TweenService = game:GetService("TweenService") -- had to use TweenService to access the event of 'Completed'
 
@@ -700,9 +706,9 @@ function EpicLibrary:CreateDropdown(text, tab, default, list, callback)
     DropdownContainer.BackgroundColor3 = Color3.fromRGB(36, 37, 37)
     DropdownContainer.BorderColor3 = Color3.fromRGB(170, 85, 255)
     DropdownContainer.Position = UDim2.new(0, 0, 1, 0)
-    DropdownContainer.Size = UDim2.new(0, 160, 0, BodyYSize)
+    DropdownContainer.Size = UDim2.new(0, 160, 0, 0)
     DropdownContainer.ClipsDescendants = true
-    DropdownContainer.Visible = false
+    -- DropdownContainer.Visible = false
     DropdownContainer.ZIndex = 3
     local UIListLayout = Instance.new("UIListLayout")
     UIListLayout.Parent = DropdownContainer
@@ -828,3 +834,8 @@ end
 end
 
 return library
+
+local notif = Notification.new("success", "Success", "Success body message.")
+notif:changeHeading("Loaded")
+notif:changeBody("Script Loaded!")
+notif:deleteTimeout(2.5)
