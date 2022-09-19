@@ -2,6 +2,8 @@ if game.CoreGui:FindFirstChild('Design') then
     game.CoreGui.Design:Destroy()
 end
 
+local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/Jxereas/UI-Libraries/main/notification_gui_library.lua", true))()
+
 local notif = Notification.new("message", Message Heading"Message body message.")
 notif:changeHeading("Loading")
 notif:changeBody("Script Is Loading...")
@@ -11,8 +13,6 @@ notif:deleteTimeout(2.5)
 UIToggleKey = 'RightShift'
 local TweenService = game:GetService("TweenService") -- had to use TweenService to access the event of 'Completed'
 
-
-local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/Jxereas/UI-Libraries/main/notification_gui_library.lua", true))()
 
 local library = {}
 
